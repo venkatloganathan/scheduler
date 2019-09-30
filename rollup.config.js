@@ -22,6 +22,7 @@ const MODULE_FACTORY_TEMPLATE_ENTRY_JS = 'ModuleFactory.js';
 const APPEND_VERSION_JS = `__${pkg.version}.js`;
 
 const MODULE_IMPORT_REPLACE_FOR_SINGLE_PAGED = '../../build/spapplication.js';
+const IMPORT_REPLACE_FOR_MAIN_JS = './spapplication.js';
 
 //const fileSeparator = path.sep;
 const getDirectories = srcPath => fs.readdirSync(srcPath).filter(file => fs.statSync(path.join(srcPath, file)).isDirectory());
@@ -129,7 +130,7 @@ const mainBuildPlugins = [
   jsonPlugin,
   babelPlugin,
 
-  //terser()
+  terser()
 ];
 
 const modulePlugins = [
@@ -239,17 +240,18 @@ function getFiles(dir, files_) {
 function finalizeBuild() {
   //console.log('Module Collection', moduleJSFileCollection);
   //getFiles('build');
+  moduleImportFileRead(mainJSBuildFileName, IMPORT_REPLACE_FOR_MAIN_JS);
   for (let i = 0; i < moduleJSFileCollection.length; i++) {
     // fs.readFile(moduleJSFileCollection[i], "utf-8", (err, data) => {
     //   console.log(data);
     // });
-    moduleImportFileRead(moduleJSFileCollection[i]);
+    moduleImportFileRead(moduleJSFileCollection[i], MODULE_IMPORT_REPLACE_FOR_SINGLE_PAGED);
   }
   htmlImportFileRead(mainHtmlBuildPath, mainIndexJsName);
   console.log('Build Total', `${(Date.now() - startTime) / 1000} ms`);
 }
 
-function moduleImportFileRead(fileName) {
+function moduleImportFileRead(fileName, replaceAS) {
   let rl = readLine.createInterface({
     input: fs.createReadStream(fileName)
   });
@@ -275,7 +277,7 @@ function moduleImportFileRead(fileName) {
       }
       if (firstLineIndex > 0) {
         const lastIndex = line.indexOf(';');
-        line = `${line.substring(0, firstLineIndex + adjustLineIndex)}'${MODULE_IMPORT_REPLACE_FOR_SINGLE_PAGED}'${line.substr(lastIndex)}`;
+        line = `${line.substring(0, firstLineIndex + adjustLineIndex)}'${replaceAS}'${line.substr(lastIndex)}`;
         //console.log(line_no, fileName, adjustLineIndex, line);
       }
     }
