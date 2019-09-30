@@ -4,10 +4,7 @@
     "description": "Single Page Application",
     "main": "index.js",
     "keywords": [
-        "Single",
-        "Page",
-        "Application",
-        "Framework"
+        "Scheduler"
     ],
     "author": "Venkat Loganathan",
     "license": "ISC",

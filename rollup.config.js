@@ -45,7 +45,8 @@ const libDir = path.join(__dirname, libFolderName);
 const libFileName = 'spapplication.js';
 //const libAbsoluteFileName = path.join(srcPath, libFileName);
 const libAbsoluteFileName = path.join(libDir, libFileName);
-const buildAbsoluteFileName = path.join(buildPath, libFileName);
+
+const includeTerser = false;
 
 console.log('Library path', libAbsoluteFileName);
 
@@ -129,8 +130,6 @@ const mainBuildPlugins = [
   htmlTemplatePlugin,
   jsonPlugin,
   babelPlugin,
-
-  terser()
 ];
 
 const modulePlugins = [
@@ -140,11 +139,10 @@ const modulePlugins = [
   resolve(),
   commonjs(),
   babelPlugin,
-
-  //terser()
 ];
 
-const moduleLastPlugin = [
+const moduleLastPlugin = modulePlugins.slice();
+moduleLastPlugin.unshift(
   //https://github.com/rollup/rollup/blob/master/test/hooks/index.js
   loader({}),
   {
@@ -153,16 +151,24 @@ const moduleLastPlugin = [
     writeBundle(options) {
       finalizeBuild();
     }
-  },
+  });
+
+/*
+const moduleLastPlugin = [
   pluginPath({
     'desktop': libAbsoluteFileName
   }),
   resolve(),
   commonjs(),
   babelPlugin,
-
-  //terser()
 ];
+ */
+
+if (includeTerser) {
+  mainBuildPlugins.push(terser());
+  modulePlugins.push(terser());
+  moduleLastPlugin.push(terser());
+}
 
 const mainBuild = {
   input: 'src/index.js',
@@ -282,6 +288,9 @@ function moduleImportFileRead(fileName, replaceAS) {
       }
     }
     lines += line;
+    if (!includeTerser) {
+      lines += os.EOL;
+    }
     line_no++;
   });
 
