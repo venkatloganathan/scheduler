@@ -1,0 +1,31 @@
+@import 'Colors';
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: $bgcolor;
+}
+
+.sp-task-window-container,
+.sp-application-window-container,
+.sp-promotion-window-container,
+.sp-interaction-window-container,
+.sp-notification-window-container,
+.sp-dialog-window-container,
+.sp-dropdown-window-container,
+.sp-tooltip-window-container {
+  position: absolute;
+}
+
+.sp-task-window-container {
+  width: 100%;
+  background-color: #2D2D2C;
+}
+
+@import 'SinglePagedWindow';
+@import 'TaskBarContainer';
