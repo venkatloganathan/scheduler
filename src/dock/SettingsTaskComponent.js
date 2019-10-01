@@ -1,6 +1,6 @@
 import {WindowRequestInteractionSource} from 'desktop';
-import TaskComponent from "./TaskComponent";
-import DefinitionTypes from "../defintion/DefinitionTypes";
+import TaskComponent from "./DockComponent";
+import DefinitionTypes from "./defintion/DefinitionTypes";
 
 class SettingsTaskComponent extends TaskComponent {
   constructor(className) {
@@ -9,7 +9,7 @@ class SettingsTaskComponent extends TaskComponent {
 
   updateWindowRequest() {
     this.windowRequest.source = WindowRequestInteractionSource.USER_INTERACTION;
-    this.windowRequest.type = DefinitionTypes.SAMPLE;
+    this.windowRequest.type = DefinitionTypes.SETTINGS;
     this.windowRequest.data = 'hello world';
   }
 

@@ -6,7 +6,7 @@ import {
   SinglePagedTaskManager
 } from 'desktop';
 
-class TaskComponent extends VisualDivElement {
+class DockComponent extends VisualDivElement {
   constructor(className) {
     super(className);
     this.windowRequest = new WindowRequest();
@@ -19,7 +19,7 @@ class TaskComponent extends VisualDivElement {
 
   createChildren() {
     super.createChildren();
-    this.iconElement = new VisualSpanElement('task-component__icon');
+    this.iconElement = new VisualSpanElement('dock-component__icon');
   }
 
   addEventListeners() {
@@ -36,6 +36,6 @@ class TaskComponent extends VisualDivElement {
   }
 }
 
-TaskComponent.TASK_REQUEST = 'taskRequest';
+DockComponent.TASK_REQUEST = 'taskRequest';
 
-export default TaskComponent;
+export default DockComponent;

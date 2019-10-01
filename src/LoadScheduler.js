@@ -1,12 +1,13 @@
 import {SinglePagedWindowManager, SinglePagedApplicationManager, SinglePagedTaskManager} from 'desktop';
-import TaskBarContainer from "./task/TaskBarContainer";
-import SampleDefinition from '../src/defintion/SampleDefinition';
+import DockContainer from "./dock/DockContainer";
+import SettingsDefinition from './dock/defintion/SettingsDefinition';
+import SchedulerDefinition from './dock/defintion/SchedulerDefinition';
 
 class LoadScheduler {
   initialise() {
 
     //Assign User definitions into Window Container manager
-    SinglePagedWindowManager.windowDefinitionCollection = [SampleDefinition];
+    SinglePagedWindowManager.windowDefinitionCollection = [SchedulerDefinition, SettingsDefinition];
 
     SinglePagedApplicationManager.isPromotionWindowContainerVisible = false;
     SinglePagedApplicationManager.interactionWindowContainerVisible = false;
@@ -17,7 +18,7 @@ class LoadScheduler {
     SinglePagedApplicationManager.taskWindowContainerHeight = 50;
     SinglePagedApplicationManager.initialiseWindowContainers();
 
-    const taskBarContainer = new TaskBarContainer('task-bar-container');
+    const taskBarContainer = new DockContainer('dock-container');
     SinglePagedTaskManager.taskWindowContainer.addToTaskContainer(taskBarContainer);
   }
 }

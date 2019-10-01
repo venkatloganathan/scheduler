@@ -1,25 +1,33 @@
 @import 'Colors';
 
-.task-bar-container {
+.dock-container {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.task-component__icon {
+.dock-component__icon {
   position: absolute;
   width: 40px;
   height: 40px;
-  background-color: aqua;
   margin-left: 5px;
   margin-top: 5px;
   cursor: pointer;
 }
 
-.settings-task-component__icon {
+.scheduler-task-component__icon {
+  background-color: darkseagreen;
   position: absolute;
   width: 50px;
   height: 50px;
+}
+
+.settings-dock-component__icon {
+  background-color: aqua;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  right: 50px;
 }
 
 

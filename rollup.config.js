@@ -254,7 +254,7 @@ function finalizeBuild() {
     moduleImportFileRead(moduleJSFileCollection[i], MODULE_IMPORT_REPLACE_FOR_SINGLE_PAGED);
   }
   htmlImportFileRead(mainHtmlBuildPath, mainIndexJsName);
-  console.log('Build Total', `${(Date.now() - startTime) / 1000} ms`);
+  console.log('Build Total', `${(Date.now() - startTime) / 1000} Seconds`);
 }
 
 function moduleImportFileRead(fileName, replaceAS) {
