@@ -1,0 +1,19 @@
+.time-line-window-app-container-wrapper {
+  position: absolute;
+}
+
+.time-line-renderer-container__monthly {
+  position: absolute;
+  //border-radius: 5px;
+  //border: 1px solid rgba(77, 107, 189, 0.16);
+  box-shadow: 0 1px 1px 0 rgba(136, 199, 206, 0.5), 0 1px 1px 0 rgba(136, 199, 206, 0.12);
+  &:hover {
+    background: deepskyblue;
+  }
+}
+
+.time-line-renderer-container__date {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}

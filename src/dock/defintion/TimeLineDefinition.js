@@ -7,6 +7,8 @@ class TimeLineDefinition extends WindowDefinition {
     this.type = DefinitionTypes.TIME_LINE;
     this.moduleName = 'timeline';
     this.basePath = '/Scheduler/build/modules';
+    this.width = 1700;
+    this.height = 500;
   }
 }
 
