@@ -2,12 +2,13 @@ import {SinglePagedWindowManager, SinglePagedApplicationManager, SinglePagedTask
 import DockContainer from "./dock/DockContainer";
 import SettingsDefinition from './dock/defintion/SettingsDefinition';
 import SchedulerDefinition from './dock/defintion/SchedulerDefinition';
+import TimeLineDefinition from './dock/defintion/TimeLineDefinition';
 
 class LoadScheduler {
   initialise() {
 
     //Assign User definitions into Window Container manager
-    SinglePagedWindowManager.windowDefinitionCollection = [SchedulerDefinition, SettingsDefinition];
+    SinglePagedWindowManager.windowDefinitionCollection = [SchedulerDefinition, SettingsDefinition, TimeLineDefinition];
 
     SinglePagedApplicationManager.isPromotionWindowContainerVisible = false;
     SinglePagedApplicationManager.interactionWindowContainerVisible = false;

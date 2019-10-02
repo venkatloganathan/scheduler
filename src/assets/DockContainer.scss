@@ -15,19 +15,26 @@
   cursor: pointer;
 }
 
-.scheduler-task-component__icon {
-  background-color: darkseagreen;
+.scheduler-task-component__icon,
+.settings-dock-component__icon,
+.timeline-dock-component__icon
+{
   position: absolute;
   width: 50px;
   height: 50px;
+}
+
+.scheduler-task-component__icon {
+  background-color: darkseagreen;
 }
 
 .settings-dock-component__icon {
   background-color: aqua;
-  position: absolute;
-  width: 50px;
-  height: 50px;
   right: 50px;
 }
 
+.timeline-dock-component__icon {
+  background-color: darkslategray;
+  left: 500px;
+}
 

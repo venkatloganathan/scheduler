@@ -133,6 +133,17 @@ RollupConstants.mainBuildPlugins = [
   RollupConstants.babelPlugin,
 ];
 
+RollupConstants.MainBareBoneBuildPlugins = [
+  pluginPath({
+    'desktop': RollupConstants.libAbsoluteFileName
+  }),
+  resolve(),
+  commonjs(),
+  RollupConstants.mainBuildCSSPlugin,
+  RollupConstants.jsonPlugin,
+  RollupConstants.babelPlugin,
+];
+
 //https://github.com/rollup/rollup/blob/master/test/utils.js
 RollupConstants.loader = function (modules) {
   modules = Object.assign(Object.create(null), modules);
@@ -201,6 +212,29 @@ RollupConstants.mainBuild = function (includeTerser) {
     plugins: RollupConstants.mainBuildPlugins
   };
 };
+
+RollupConstants.mainBareBoneBuild = function (includeTerser) {
+  if (includeTerser) {
+    RollupConstants.mainBuildPlugins.push(terser());
+  }
+  return {
+    input: RollupConstants.SOURCE_INDEX_ENTRY,
+    output: {
+      globals: {
+        libAbsoluteFileName: RollupConstants.windowLibraryName
+      },
+      //dir: buildPath,
+      file: RollupConstants.mainJSBuildFileName,
+      format: RollupConstants.BUILD_FORMAT,
+      //name: pkg.name,
+      sourceMap: true,
+      name: pkg.name
+    },
+    external: [RollupConstants.libAbsoluteFileName],
+    plugins: RollupConstants.MainBareBoneBuildPlugins
+  };
+};
+
 
 RollupConstants.getDirectories = srcPath => fs.readdirSync(srcPath).filter(file => fs.statSync(path.join(srcPath, file)).isDirectory());
 

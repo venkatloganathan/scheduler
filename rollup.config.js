@@ -5,7 +5,7 @@ import path from "path";
 const startTime = Date.now();
 
 const moduleBuild = false;
-const moduleName = 'schdeuler';
+const moduleName = 'timeline';
 const includeTerser = false;
 
 let buildCollection;
@@ -19,6 +19,7 @@ if (moduleBuild) {
   moduleJSFileCollection = [];
   modulePlugins = RollupConstants.modulePlugins(includeTerser);
   moduleLastPlugin = RollupConstants.moduleLastPlugins(finalizeBuild, includeTerser);
+  //buildCollection.push(RollupConstants.mainBareBoneBuild(includeTerser));
   buildModule(moduleName);
 } else {
   buildCollection = fullBuild;
