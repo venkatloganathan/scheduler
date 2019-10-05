@@ -1,0 +1,51 @@
+.component__date {
+  position: absolute;
+  border: 1px solid rgba(77, 107, 189, 0.16);
+  box-shadow: 0 1px 1px 0 rgba(136, 199, 206, 0.5), 0 1px 1px 0 rgba(136, 199, 206, 0.12);
+}
+
+.component__date__day_month{
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  cursor: default;
+}
+
+.component__date__back,
+.component__date__forward {
+  position: absolute;
+  top: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    background: deepskyblue;
+    border-radius: 50%;
+    display: inline-block;
+  }
+}
+
+.component__date__day_cell {
+  position: absolute;
+  cursor: default;
+  text-align: center;
+  font-size: 11px;
+}
+
+.component__date__date_cell {
+  position: absolute;
+  cursor: pointer;
+  text-align: center;
+  font-size: 11px;
+  &:hover {
+    background: deepskyblue;
+  }
+}
+
+.component__date__back {
+  left: 10px;
+}
+
+.component__date__forward {
+  right: 10px;
+}
+
