@@ -4,7 +4,7 @@
   box-shadow: 0 1px 1px 0 rgba(136, 199, 206, 0.5), 0 1px 1px 0 rgba(136, 199, 206, 0.12);
 }
 
-.component__date__day_month{
+.component__date__day_month {
   text-align: center;
   margin-top: 10px;
   font-weight: bold;
@@ -17,6 +17,7 @@
   top: 10px;
   font-weight: bold;
   cursor: pointer;
+
   &:hover {
     background: deepskyblue;
     border-radius: 50%;
@@ -36,8 +37,41 @@
   cursor: pointer;
   text-align: center;
   font-size: 11px;
+
   &:hover {
     background: deepskyblue;
+  }
+
+  &.today {
+    background: darkorange;
+
+    &:hover {
+      background: deepskyblue;
+    }
+  }
+
+  &.weekend {
+    background: #999999;
+
+    &:hover {
+      background: deepskyblue;
+    }
+  }
+
+  &.holiday {
+    background: bisque;
+
+    &:hover {
+      background: deepskyblue;
+    }
+  }
+
+  &.selected {
+    background: darkred;
+  }
+
+  &.end-of-month {
+    background: brown;
   }
 }
 

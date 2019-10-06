@@ -34,7 +34,7 @@ class LoadScheduler {
     windowRequest.source = WindowRequestInteractionSource.USER_INTERACTION;
     windowRequest.type = DefinitionTypes.TIME_LINE;
     windowRequest.data = 'hello world';
-    SinglePagedTaskManager.loadWindow(windowRequest);
+    //SinglePagedTaskManager.loadWindow(windowRequest);
   }
 }
 

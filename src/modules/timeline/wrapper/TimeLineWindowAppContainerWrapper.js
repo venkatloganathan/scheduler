@@ -10,8 +10,8 @@ class TimeLineWindowAppContainerWrapper extends WindowAppContainerWrapper {
     const renderX = 700;
     const renderY = 50;
 
-    const rendererWidth = 170;
-    const rendererHeight = 150;
+    const rendererWidth = 200;
+    const rendererHeight = 170;
 
     this.dateComponent = new DateComponent('component__date');
     this.dateComponent.measure(rendererWidth, rendererHeight);

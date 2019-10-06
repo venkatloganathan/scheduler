@@ -20,6 +20,7 @@ class DateComponent extends VisualDivElement {
     this.cellHeight = 25;
     this.firstDate = null;
     this.lastDate = null;
+    this.manipulatedDate = null;
     this.startOfDay = 1;
     this.cachedYear = 0;
     this.cachedMonth = 0;
@@ -37,6 +38,21 @@ class DateComponent extends VisualDivElement {
     this.totalRows = 0;
     this._headerHeight = 28;
     this._headerGap = 10;
+
+    this.currentDate = new Date();
+    this.selectedDate = null;
+
+    this.todayStyleName = 'today';
+    this.selectedStyleName = 'selected';
+    this.holidayStyleName = 'holiday';
+    this.weekendStyleName = 'weekend';
+
+    this.weekendDays = [5, 6];
+    this.holidaysCollection = [new Date(2019, 11, 25), new Date(2020, 0, 1)];
+    this.customSelectionCollection = [{
+      date: new Date(2019, 9, 5), style: 'end-of-month'
+    }];
+
     this.callLifeCycle();
   }
 
@@ -54,10 +70,10 @@ class DateComponent extends VisualDivElement {
     for (let i = 0; i < MAX_DAYS; i++) {
       const renderer = new DateRenderer('component__date__date_cell');
       this.dateCollection[i] = renderer;
-      renderer.setText(i + 1);
+      renderer.setDateAsNumber(i + 1);
+      renderer.addDOMEventListener(VisualMouseEvent.CLICK, this.dateSelected.bind(this, renderer));
     }
-    const currentDate = new Date();
-    this.setCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    this.setCalendar(this.currentDate.getFullYear(), this.currentDate.getMonth());
     //this.setCalendar(2019, 2);
   }
 
@@ -101,6 +117,11 @@ class DateComponent extends VisualDivElement {
     this.firstDate.setUTCSeconds(0);
     this.firstDate.setUTCMilliseconds(0);
     const firstDay = this.firstDate.getDay();
+    this.manipulatedDate = new Date(year, month, 1);
+    this.manipulatedDate.setHours(0);
+    this.manipulatedDate.setMinutes(0);
+    this.manipulatedDate.setHours(0);
+    this.manipulatedDate.setMilliseconds(0);
     console.log('------------------------------------------------------');
     this.lastDate = new Date(Date.UTC(year, month + 1, 1));
     this.lastDate.setUTCHours(0);
@@ -136,7 +157,26 @@ class DateComponent extends VisualDivElement {
     this.setCalendar(currentYear, currentMonth);
   }
 
+  dateSelected(dateRenderer, event) {
+    const selectedDate = new Date();
+    selectedDate.setFullYear(this.firstDate.getFullYear());
+    selectedDate.setMonth(this.firstDate.getMonth());
+    selectedDate.setDate(dateRenderer.dateAsNumber);
+    this.dispatch(DateComponent.SELECTED_DATE, selectedDate);
+    this.setSelectedDate(selectedDate);
+  }
+
+  setSelectedDate(date) {
+    this.selectedDate = date;
+    this.populateRows(1, this.lastDate.getDate(), this.firstDate.getDay());
+  }
+
   populateRows(startDate, endDate, startDay) {
+    this.currentDate = new Date();
+    this.currentDate.setHours(0);
+    this.currentDate.setMinutes(0);
+    this.currentDate.setHours(0);
+    this.currentDate.setMilliseconds(0);
     const visibleDifference = this.cachedEndDate - endDate;
     if (visibleDifference > 0) {
       for (let i = MAX_DAYS; i > endDate; i--) {
@@ -161,6 +201,7 @@ class DateComponent extends VisualDivElement {
     this.fifthDayCollection.length = 0;
     this.sixthDayCollection.length = 0;
     this.seventhDayCollection.length = 0;
+
     let str = '';
     let startDayIndex = startDay;
     let lastProcessedIndex = 0;
@@ -221,29 +262,106 @@ class DateComponent extends VisualDivElement {
   }
 
   populateCollection(startDay, day = null, previous = false, forward = false) {
-    day = Utils.isDefinedAndNotNull(day) ? this.dateCollection[day - 1] : null;
+    let dateComponent = null;
+    if (Utils.isDefinedAndNotNull(day)) {
+      dateComponent = this.dateCollection[day - 1];
+      this.applyStyles(dateComponent, startDay, day);
+    }
     switch (startDay) {
       case FIRST_DAY:
-        this.firstDayCollection.push(day);
+        this.firstDayCollection.push(dateComponent);
         break;
       case SECOND_DAY:
-        this.secondDayCollection.push(day);
+        this.secondDayCollection.push(dateComponent);
         break;
       case THIRD_DAY:
-        this.thirdDayCollection.push(day);
+        this.thirdDayCollection.push(dateComponent);
         break;
       case FOURTH_DAY:
-        this.fourthDayCollection.push(day);
+        this.fourthDayCollection.push(dateComponent);
         break;
       case FIFTH_DAY:
-        this.fifthDayCollection.push(day);
+        this.fifthDayCollection.push(dateComponent);
         break;
       case SIXTH_DAY:
-        this.sixthDayCollection.push(day);
+        this.sixthDayCollection.push(dateComponent);
         break;
       case SEVENTH_DAY:
-        this.seventhDayCollection.push(day);
+        this.seventhDayCollection.push(dateComponent);
         break;
+    }
+  }
+
+  applyStyles(dateComponent, startDay, day) {
+    day--;
+    dateComponent.removeAllClasses();
+    let weekendStyleApplied = false;
+    let currentDateStyleApplied = false;
+    let holidayStyleApplied = false;
+    let customStyleApplied = false;
+    let selectedStyleApplied = false;
+
+    this.manipulatedDate.setTime(this.firstDate.getTime() + (day * DateComponent.DAY_IN_MILLISECONDS));
+
+    if (this.selectedDate && this.selectedDate.getDate() === this.manipulatedDate.getDate() &&
+      this.selectedDate.getMonth() === this.manipulatedDate.getMonth() &&
+      this.selectedDate.getFullYear() === this.manipulatedDate.getFullYear()) {
+      selectedStyleApplied = true;
+    }
+
+    if (!selectedStyleApplied && this.weekendDays) {
+      for (let i = 0; i < this.weekendDays.length; i++) {
+        if (this.weekendDays[i] === startDay) {
+          weekendStyleApplied = true;
+          break;
+        }
+      }
+    }
+
+    if (!selectedStyleApplied && this.currentDate.getDate() === this.manipulatedDate.getDate() &&
+      this.currentDate.getMonth() === this.manipulatedDate.getMonth() &&
+      this.currentDate.getFullYear() === this.manipulatedDate.getFullYear()) {
+      currentDateStyleApplied = true;
+    }
+
+    if (!currentDateStyleApplied && this.customSelectionCollection) {
+      let customSelection = null;
+      for (let i = 0; i < this.customSelectionCollection.length; i++) {
+        customSelection = this.customSelectionCollection[i];
+        if (customSelection.date.getDate() === this.manipulatedDate.getDate() &&
+          customSelection.date.getMonth() === this.manipulatedDate.getMonth() &&
+          customSelection.date.getFullYear() === this.manipulatedDate.getFullYear()) {
+          console.log('Comparing Current date', customSelection.date.toDateString(), 'Manipulated date', this.manipulatedDate.toDateString());
+          weekendStyleApplied = false;
+          customStyleApplied = true;
+          dateComponent.addClass(customSelection.style);
+          break;
+        }
+      }
+    }
+
+    if (!currentDateStyleApplied && !customStyleApplied && this.holidaysCollection) {
+      let holidayDate = null;
+      for (let i = 0; i < this.holidaysCollection.length; i++) {
+        holidayDate = this.holidaysCollection[i];
+        if (holidayDate.getDate() === this.manipulatedDate.getDate() &&
+          holidayDate.getMonth() === this.manipulatedDate.getMonth() &&
+          holidayDate.getFullYear() === this.manipulatedDate.getFullYear()) {
+          console.log('Comparing Current date', holidayDate.toDateString(), 'Manipulated date', this.manipulatedDate.toDateString());
+          holidayStyleApplied = true;
+          break;
+        }
+      }
+    }
+
+    if (selectedStyleApplied) {
+      dateComponent.addClass(this.selectedStyleName);
+    } else if (currentDateStyleApplied) {
+      dateComponent.addClass(this.todayStyleName);
+    } else if (holidayStyleApplied) {
+      dateComponent.addClass(this.holidayStyleName);
+    } else if (weekendStyleApplied) {
+      dateComponent.addClass(this.weekendStyleName);
     }
   }
 
@@ -329,7 +447,7 @@ class DateComponent extends VisualDivElement {
     this.dateCollection = null;
 
     this.dayOrderedCollection.length = 0;
-    this.dayOrderedCollection= null;
+    this.dayOrderedCollection = null;
 
     this.firstDayCollection.length = 0;
     this.firstDayCollection = null;
@@ -360,6 +478,8 @@ DateComponent.MINUTE_IN_MILLISECONDS = 1000 * 60;
 DateComponent.HOUR_IN_MILLISECONDS = DateComponent.MINUTE_IN_MILLISECONDS * 60;
 DateComponent.DAY_IN_MILLISECONDS = DateComponent.HOUR_IN_MILLISECONDS * 24;
 DateComponent.WEEK_IN_MILLISECONDS = DateComponent.DAY_IN_MILLISECONDS * 7;
+
+DateComponent.SELECTED_DATE = 'selectedDate';
 
 DateComponent.MONTH = ['January', 'February', 'March', 'April', 'May', 'June', '' +
 'July', 'August', 'September', 'October', 'November', 'December'];
