@@ -1,11 +1,12 @@
-import {WindowAppContainerWrapper} from 'desktop';
+import {VisualDivElement, VisualMouseEvent, Utils} from 'desktop';
 import TimeLineMonthlyRenderer from "../renderer/TimeLineMonthlyRenderer";
 
-class TimeLineWindowAppContainerWrapper_bckp extends WindowAppContainerWrapper {
+class TimeLinePlannerContainer extends VisualDivElement {
   constructor(className) {
-    super(className);
+    super(className, false);
+    this._selectedDate = null;
+    this.callLifeCycle();
   }
-
   createChildren() {
 
     const hGap = 4;
@@ -148,6 +149,10 @@ class TimeLineWindowAppContainerWrapper_bckp extends WindowAppContainerWrapper {
     this.timeLineMonthlyRenderer13.updateDimension();
     this.timeLineMonthlyRenderer14.updateDimension();
   }
+
+  set selectedDate(date) {
+    this._selectedDate = date;
+  }
 }
 
-export default TimeLineWindowAppContainerWrapper_bckp;
+export default TimeLinePlannerContainer;

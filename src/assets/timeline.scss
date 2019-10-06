@@ -2,6 +2,22 @@
   position: absolute;
 }
 
+.time-line-header-container {
+  position: absolute;
+}
+
+.time-line-header-container__label {
+  position: absolute;
+  cursor: default;
+  line-height: 43px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.time-line-planer-container {
+  position: absolute;
+}
+
 .time-line-renderer-container__monthly {
   position: absolute;
   //border-radius: 5px;

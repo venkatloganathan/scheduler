@@ -1,5 +1,5 @@
 import {VisualDivElement, VisualSpanElement, VisualMouseEvent, Utils} from 'desktop';
-import DateRenderer from "./DateRenderer";
+import DateDayRenderer from "./DateDayRenderer";
 
 const FIRST_DAY = 0;
 const SECOND_DAY = 1;
@@ -13,7 +13,7 @@ const MAX_DAYS_IN_WEEK = 7;
 const MAX_DAYS = 31;
 
 
-class DateComponent extends VisualDivElement {
+class DateDayComponent extends VisualDivElement {
 
   constructor(className) {
     super(className, false);
@@ -47,11 +47,11 @@ class DateComponent extends VisualDivElement {
     this.holidayStyleName = 'holiday';
     this.weekendStyleName = 'weekend';
 
-    this.weekendDays = [5, 6];
-    this.holidaysCollection = [new Date(2019, 11, 25), new Date(2020, 0, 1)];
-    this.customSelectionCollection = [{
-      date: new Date(2019, 9, 5), style: 'end-of-month'
-    }];
+    //this.weekendDays = [5, 6];
+    //this.holidaysCollection = [new Date(2019, 11, 25), new Date(2020, 0, 1)];
+    //this.customSelectionCollection = [{
+    //  day: new Date(2019, 9, 5), style: 'end-of-month'
+    //}];
 
     this.callLifeCycle();
   }
@@ -63,17 +63,18 @@ class DateComponent extends VisualDivElement {
     this.leftArrowElement.setText('<');
     this.rightArrowElement.setText('>');
     for (let i = 0; i < MAX_DAYS_IN_WEEK; i++) {
-      const renderer = new DateRenderer('component__date__day_cell');
+      const renderer = new DateDayRenderer('component__date__day_cell');
       this.dayCollection[i] = renderer;
-      renderer.setText(DateComponent.DAY[i]);
+      renderer.setText(DateDayComponent.DAY[i]);
     }
     for (let i = 0; i < MAX_DAYS; i++) {
-      const renderer = new DateRenderer('component__date__date_cell');
+      const renderer = new DateDayRenderer('component__date__date_cell');
       this.dateCollection[i] = renderer;
       renderer.setDateAsNumber(i + 1);
       renderer.addDOMEventListener(VisualMouseEvent.CLICK, this.dateSelected.bind(this, renderer));
     }
     this.setCalendar(this.currentDate.getFullYear(), this.currentDate.getMonth());
+    this.selectedDate = this.currentDate;
     //this.setCalendar(2019, 2);
   }
 
@@ -128,8 +129,8 @@ class DateComponent extends VisualDivElement {
     this.lastDate.setUTCMinutes(0);
     this.lastDate.setUTCSeconds(0);
     this.lastDate.setUTCMilliseconds(0);
-    this.lastDate.setTime(this.lastDate.getTime() - DateComponent.DAY_IN_MILLISECONDS);
-    const displayText = `${DateComponent.MONTH[month]} ${year}`;
+    this.lastDate.setTime(this.lastDate.getTime() - DateDayComponent.DAY_IN_MILLISECONDS);
+    const displayText = `${DateDayComponent.MONTH[month]} ${year}`;
     this.dayMonthTextElement.setText(displayText);
     console.log('First Date', this.firstDate.toDateString(), 'Last Date', this.lastDate.toDateString());
     this.populateRows(1, this.lastDate.getDate(), firstDay);
@@ -162,8 +163,8 @@ class DateComponent extends VisualDivElement {
     selectedDate.setFullYear(this.firstDate.getFullYear());
     selectedDate.setMonth(this.firstDate.getMonth());
     selectedDate.setDate(dateRenderer.dateAsNumber);
-    this.dispatch(DateComponent.SELECTED_DATE, selectedDate);
     this.setSelectedDate(selectedDate);
+    this.dispatch(DateDayComponent.SELECTED_DATE, selectedDate);
   }
 
   setSelectedDate(date) {
@@ -211,13 +212,13 @@ class DateComponent extends VisualDivElement {
     let totalRows = 0;
     let endOfWeek = MAX_DAYS_IN_WEEK - 1;
 
-    for (let i = this.startOfDay; i < DateComponent.DAY.length; i++) {
-      dayStr += `${DateComponent.DAY[i]} `;
+    for (let i = this.startOfDay; i < DateDayComponent.DAY.length; i++) {
+      dayStr += `${DateDayComponent.DAY[i]} `;
       this.dayOrderedCollection.push(this.dayCollection[i]);
     }
 
     for (let i = 0; i < this.startOfDay; i++) {
-      dayStr += `${DateComponent.DAY[i]} `;
+      dayStr += `${DateDayComponent.DAY[i]} `;
       this.dayOrderedCollection.push(this.dayCollection[i]);
     }
 
@@ -301,7 +302,7 @@ class DateComponent extends VisualDivElement {
     let customStyleApplied = false;
     let selectedStyleApplied = false;
 
-    this.manipulatedDate.setTime(this.firstDate.getTime() + (day * DateComponent.DAY_IN_MILLISECONDS));
+    this.manipulatedDate.setTime(this.firstDate.getTime() + (day * DateDayComponent.DAY_IN_MILLISECONDS));
 
     if (this.selectedDate && this.selectedDate.getDate() === this.manipulatedDate.getDate() &&
       this.selectedDate.getMonth() === this.manipulatedDate.getMonth() &&
@@ -331,7 +332,7 @@ class DateComponent extends VisualDivElement {
         if (customSelection.date.getDate() === this.manipulatedDate.getDate() &&
           customSelection.date.getMonth() === this.manipulatedDate.getMonth() &&
           customSelection.date.getFullYear() === this.manipulatedDate.getFullYear()) {
-          console.log('Comparing Current date', customSelection.date.toDateString(), 'Manipulated date', this.manipulatedDate.toDateString());
+          console.log('Comparing Current day', customSelection.date.toDateString(), 'Manipulated day', this.manipulatedDate.toDateString());
           weekendStyleApplied = false;
           customStyleApplied = true;
           dateComponent.addClass(customSelection.style);
@@ -347,7 +348,7 @@ class DateComponent extends VisualDivElement {
         if (holidayDate.getDate() === this.manipulatedDate.getDate() &&
           holidayDate.getMonth() === this.manipulatedDate.getMonth() &&
           holidayDate.getFullYear() === this.manipulatedDate.getFullYear()) {
-          console.log('Comparing Current date', holidayDate.toDateString(), 'Manipulated date', this.manipulatedDate.toDateString());
+          console.log('Comparing Current day', holidayDate.toDateString(), 'Manipulated day', this.manipulatedDate.toDateString());
           holidayStyleApplied = true;
           break;
         }
@@ -473,17 +474,17 @@ class DateComponent extends VisualDivElement {
 
 }
 
-DateComponent.SECOND_IN_MILLISECONDS = 1000;
-DateComponent.MINUTE_IN_MILLISECONDS = 1000 * 60;
-DateComponent.HOUR_IN_MILLISECONDS = DateComponent.MINUTE_IN_MILLISECONDS * 60;
-DateComponent.DAY_IN_MILLISECONDS = DateComponent.HOUR_IN_MILLISECONDS * 24;
-DateComponent.WEEK_IN_MILLISECONDS = DateComponent.DAY_IN_MILLISECONDS * 7;
+DateDayComponent.SECOND_IN_MILLISECONDS = 1000;
+DateDayComponent.MINUTE_IN_MILLISECONDS = 1000 * 60;
+DateDayComponent.HOUR_IN_MILLISECONDS = DateDayComponent.MINUTE_IN_MILLISECONDS * 60;
+DateDayComponent.DAY_IN_MILLISECONDS = DateDayComponent.HOUR_IN_MILLISECONDS * 24;
+DateDayComponent.WEEK_IN_MILLISECONDS = DateDayComponent.DAY_IN_MILLISECONDS * 7;
 
-DateComponent.SELECTED_DATE = 'selectedDate';
+DateDayComponent.SELECTED_DATE = 'selectedDate';
 
-DateComponent.MONTH = ['January', 'February', 'March', 'April', 'May', 'June', '' +
+DateDayComponent.MONTH = ['January', 'February', 'March', 'April', 'May', 'June', '' +
 'July', 'August', 'September', 'October', 'November', 'December'];
 
-DateComponent.DAY = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+DateDayComponent.DAY = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
 
-export default DateComponent;
+export default DateDayComponent;

@@ -1,6 +1,6 @@
 import {VisualDivElement} from 'desktop';
 
-class DateRenderer extends VisualDivElement {
+class DateDayRenderer extends VisualDivElement {
 
   constructor(className) {
     super(className, false);
@@ -18,4 +18,4 @@ class DateRenderer extends VisualDivElement {
   }
 }
 
-export default DateRenderer;
+export default DateDayRenderer;
