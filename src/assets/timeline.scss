@@ -23,9 +23,18 @@
   //border-radius: 5px;
   //border: 1px solid rgba(77, 107, 189, 0.16);
   box-shadow: 0 1px 1px 0 rgba(136, 199, 206, 0.5), 0 1px 1px 0 rgba(136, 199, 206, 0.12);
-  &:hover {
-    background: deepskyblue;
-  }
+  //&:hover {
+  //  background: deepskyblue;
+  //}
+}
+
+.time-line-renderer-container__day {
+  position: absolute;
+  cursor: default;
+  text-align: left;
+  font-size: 19px;
+  margin-left: 5px;
+  line-height: 10px;
 }
 
 .time-line-renderer-container__date {

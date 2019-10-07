@@ -24,10 +24,15 @@ class TimeLineHeaderContainer extends VisualDivElement {
     this.addChild(this.labelComponent);
   }
 
-  set selectedDate(date) {
-    this._selectedDate = date;
-    const displayText = date ? `${date.getDate()} ${DateProperties.MONTH[date.getMonth()]} ${date.getFullYear()}` : '';
-    this.labelComponent.setText(displayText);
+  // set selectedDate(date) {
+  //   this._selectedDate = date;
+  //   const displayText = date ? `${date.getDate()} ${DateProperties.MONTH[date.getMonth()]} ${date.getFullYear()}` : '';
+  //   this.labelComponent.setText(displayText);
+  // }
+
+  updateDate(firstDate, lastDate) {
+      const displayText = firstDate ? `${DateProperties.MONTH[firstDate.getMonth()]} ${firstDate.getFullYear()}` : '';
+      this.labelComponent.setText(displayText);
   }
 
 }

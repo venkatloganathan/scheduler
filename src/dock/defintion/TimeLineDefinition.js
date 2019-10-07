@@ -9,6 +9,8 @@ class TimeLineDefinition extends WindowDefinition {
     this.basePath = '/Scheduler/build/modules';
     this.width = 0;
     this.height = 0;
+    this.minWidth = 870;
+    this.minHeight = 460;
   }
 }
 

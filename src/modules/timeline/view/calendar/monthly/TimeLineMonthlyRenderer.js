@@ -15,7 +15,7 @@ class TimeLineMonthlyRenderer extends VisualDivElement {
     this.dateComponent.updateDimension();
   }
 
-  setDate(date){
+  setDateAsNumber(date){
     this.dateComponent.setText(date);
   }
 

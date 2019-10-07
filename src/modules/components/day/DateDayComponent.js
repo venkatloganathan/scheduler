@@ -36,11 +36,11 @@ class DateDayComponent extends VisualDivElement {
     this.holidayStyleName = 'holiday';
     this.weekendStyleName = 'weekend';
 
-    //this.weekendDays = [5, 6];
-    //this.holidaysCollection = [new Date(2019, 11, 25), new Date(2020, 0, 1)];
-    //this.customSelectionCollection = [{
-    //  day: new Date(2019, 9, 5), style: 'end-of-month'
-    //}];
+    this.weekendDays = [5, 6];
+    this.holidaysCollection = [new Date(2019, 11, 25), new Date(2020, 0, 1)];
+    this.customSelectionCollection = [{
+      date: new Date(2019, 9, 5), style: 'end-of-month'
+    }];
 
     this.callLifeCycle();
   }
@@ -134,6 +134,7 @@ class DateDayComponent extends VisualDivElement {
       currentYear--;
     }
     this.setCalendar(currentYear, currentMonth);
+    this.dispatch(DateDayComponent.GO_BACK, null);
   }
 
   goForwardHandler() {
@@ -145,6 +146,7 @@ class DateDayComponent extends VisualDivElement {
       currentYear++;
     }
     this.setCalendar(currentYear, currentMonth);
+    this.dispatch(DateDayComponent.GO_FORWARD, null);
   }
 
   dateSelected(dateRenderer, event) {
@@ -462,5 +464,7 @@ class DateDayComponent extends VisualDivElement {
 }
 
 DateDayComponent.SELECTED_DATE = 'selectedDate';
+DateDayComponent.GO_BACK = 'goBack';
+DateDayComponent.GO_FORWARD = 'goForward';
 
 export default DateDayComponent;

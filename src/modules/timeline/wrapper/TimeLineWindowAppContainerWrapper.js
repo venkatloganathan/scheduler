@@ -25,6 +25,8 @@ class TimeLineWindowAppContainerWrapper extends WindowAppContainerWrapper {
     this.dateComponent.setPosition(componentX, componentY);
 
     this.dateComponent.addListener(DateDayComponent.SELECTED_DATE, this.dateComponentSelectHandler.bind(this));
+    this.dateComponent.addListener(DateDayComponent.GO_BACK, this.dateComponentGoBackHandler.bind(this));
+    this.dateComponent.addListener(DateDayComponent.GO_FORWARD, this.dateComponentGoForwardHandler.bind(this));
 
     componentX = DATE_COMPONENT_WIDTH + (HORIZONTAL_GAP * 2);
     this.headerContainer = new TimeLineHeaderContainer('time-line-header-container');
@@ -39,6 +41,7 @@ class TimeLineWindowAppContainerWrapper extends WindowAppContainerWrapper {
     this.addChild(this.dateComponent);
     this.addChild(this.headerContainer);
     this.addChild(this.plannerContainer);
+    this.dateComponentGoBackHandler();
     this.dateComponentSelectHandler();
   }
 
@@ -51,8 +54,18 @@ class TimeLineWindowAppContainerWrapper extends WindowAppContainerWrapper {
   }
 
   dateComponentSelectHandler() {
-    console.log('Selected Date', this.dateComponent.selectedDate.toDateString());
     this.headerContainer.selectedDate = this.dateComponent.selectedDate;
+    this.plannerContainer.selectedDate = this.dateComponent.selectedDate;
+  }
+
+  dateComponentGoBackHandler() {
+    this.plannerContainer.goBack(this.dateComponent.firstDate, this.dateComponent.lastDate);
+    this.headerContainer.updateDate(this.dateComponent.firstDate, this.dateComponent.lastDate);
+  }
+
+  dateComponentGoForwardHandler() {
+    this.plannerContainer.goForward(this.dateComponent.firstDate, this.dateComponent.lastDate);
+    this.headerContainer.updateDate(this.dateComponent.firstDate, this.dateComponent.lastDate);
   }
 }
 
