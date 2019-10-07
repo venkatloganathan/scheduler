@@ -1,7 +1,7 @@
 import {WindowAppContainerWrapper} from 'desktop';
 import DateDayComponent from "../../components/day/DateDayComponent";
 import TimeLineHeaderContainer from "../view/header/TimeLineHeaderContainer";
-import TimeLinePlannerContainer from "../view/planner/TimeLinePlannerContainer";
+import TimeLineCalendarContainer from "../view/calendar/TimeLineCalendarContainer";
 
 const DATE_COMPONENT_WIDTH = 200;
 const DATE_COMPONENT_HEIGHT = 170;
@@ -31,7 +31,7 @@ class TimeLineWindowAppContainerWrapper extends WindowAppContainerWrapper {
     this.headerContainer.setPosition(componentX, componentY);
 
     componentY = HEADER_CONTAINER_HEIGHT + (VERTICAL_GAP * 2);
-    this.plannerContainer = new TimeLinePlannerContainer('time-line-planer-container');
+    this.plannerContainer = new TimeLineCalendarContainer('time-line-planer-container');
     this.plannerContainer.setPosition(componentX, componentY);
   }
 

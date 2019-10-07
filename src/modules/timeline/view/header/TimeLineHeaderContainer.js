@@ -1,6 +1,6 @@
 import {VisualDivElement, VisualMouseEvent, Utils} from 'desktop';
-import DateDayComponent from "../../../components/day/DateDayComponent";
-import TimeLinePlannerContainer from "../planner/TimeLinePlannerContainer";
+import TimeLineCalendarContainer from "../calendar/TimeLineCalendarContainer";
+import DateProperties from "../../../components/day/DateProperties";
 
 const HORIZONTAL_GAP = 10;
 const VERTICAL_GAP = 10;
@@ -26,7 +26,7 @@ class TimeLineHeaderContainer extends VisualDivElement {
 
   set selectedDate(date) {
     this._selectedDate = date;
-    const displayText = date ? `${date.getDate()} ${DateDayComponent.MONTH[date.getMonth()]} ${date.getFullYear()}` : '';
+    const displayText = date ? `${date.getDate()} ${DateProperties.MONTH[date.getMonth()]} ${date.getFullYear()}` : '';
     this.labelComponent.setText(displayText);
   }
 

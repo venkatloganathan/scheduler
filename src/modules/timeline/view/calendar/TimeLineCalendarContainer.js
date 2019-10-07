@@ -1,7 +1,7 @@
 import {VisualDivElement, VisualMouseEvent, Utils} from 'desktop';
-import TimeLineMonthlyRenderer from "../renderer/TimeLineMonthlyRenderer";
+import TimeLineMonthlyRenderer from "./monthly/TimeLineMonthlyRenderer";
 
-class TimeLinePlannerContainer extends VisualDivElement {
+class TimeLineCalendarContainer extends VisualDivElement {
   constructor(className) {
     super(className, false);
     this._selectedDate = null;
@@ -155,4 +155,4 @@ class TimeLinePlannerContainer extends VisualDivElement {
   }
 }
 
-export default TimeLinePlannerContainer;
+export default TimeLineCalendarContainer;

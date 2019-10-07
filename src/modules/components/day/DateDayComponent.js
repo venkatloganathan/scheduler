@@ -1,23 +1,12 @@
 import {VisualDivElement, VisualSpanElement, VisualMouseEvent, Utils} from 'desktop';
 import DateDayRenderer from "./DateDayRenderer";
-
-const FIRST_DAY = 0;
-const SECOND_DAY = 1;
-const THIRD_DAY = 2;
-const FOURTH_DAY = 3;
-const FIFTH_DAY = 4;
-const SIXTH_DAY = 5;
-const SEVENTH_DAY = 6;
-
-const MAX_DAYS_IN_WEEK = 7;
-const MAX_DAYS = 31;
+import DateProperties from "./DateProperties";
 
 
 class DateDayComponent extends VisualDivElement {
 
   constructor(className) {
     super(className, false);
-    this.cellHeight = 25;
     this.firstDate = null;
     this.lastDate = null;
     this.manipulatedDate = null;
@@ -34,7 +23,7 @@ class DateDayComponent extends VisualDivElement {
     this.fifthDayCollection = [];
     this.sixthDayCollection = [];
     this.seventhDayCollection = [];
-    this.cachedEndDate = MAX_DAYS;
+    this.cachedEndDate = DateProperties.MAX_DAYS;
     this.totalRows = 0;
     this._headerHeight = 28;
     this._headerGap = 10;
@@ -62,12 +51,12 @@ class DateDayComponent extends VisualDivElement {
     this.rightArrowElement = new VisualSpanElement('component__date__forward');
     this.leftArrowElement.setText('<');
     this.rightArrowElement.setText('>');
-    for (let i = 0; i < MAX_DAYS_IN_WEEK; i++) {
+    for (let i = 0; i < DateProperties.MAX_DAYS_IN_WEEK; i++) {
       const renderer = new DateDayRenderer('component__date__day_cell');
       this.dayCollection[i] = renderer;
-      renderer.setText(DateDayComponent.DAY[i]);
+      renderer.setText(DateProperties.DAY[i]);
     }
-    for (let i = 0; i < MAX_DAYS; i++) {
+    for (let i = 0; i < DateProperties.MAX_DAYS; i++) {
       const renderer = new DateDayRenderer('component__date__date_cell');
       this.dateCollection[i] = renderer;
       renderer.setDateAsNumber(i + 1);
@@ -87,10 +76,10 @@ class DateDayComponent extends VisualDivElement {
     this.addChild(this.leftArrowElement);
     this.addChild(this.dayMonthTextElement);
     this.addChild(this.rightArrowElement);
-    for (let i = 0; i < MAX_DAYS_IN_WEEK; i++) {
+    for (let i = 0; i < DateProperties.MAX_DAYS_IN_WEEK; i++) {
       this.addChild(this.dayCollection[i]);
     }
-    for (let i = 0; i < MAX_DAYS; i++) {
+    for (let i = 0; i < DateProperties.MAX_DAYS; i++) {
       this.addChild(this.dateCollection[i]);
     }
   }
@@ -129,8 +118,8 @@ class DateDayComponent extends VisualDivElement {
     this.lastDate.setUTCMinutes(0);
     this.lastDate.setUTCSeconds(0);
     this.lastDate.setUTCMilliseconds(0);
-    this.lastDate.setTime(this.lastDate.getTime() - DateDayComponent.DAY_IN_MILLISECONDS);
-    const displayText = `${DateDayComponent.MONTH[month]} ${year}`;
+    this.lastDate.setTime(this.lastDate.getTime() - DateProperties.DAY_IN_MILLISECONDS);
+    const displayText = `${DateProperties.MONTH[month]} ${year}`;
     this.dayMonthTextElement.setText(displayText);
     console.log('First Date', this.firstDate.toDateString(), 'Last Date', this.lastDate.toDateString());
     this.populateRows(1, this.lastDate.getDate(), firstDay);
@@ -180,11 +169,11 @@ class DateDayComponent extends VisualDivElement {
     this.currentDate.setMilliseconds(0);
     const visibleDifference = this.cachedEndDate - endDate;
     if (visibleDifference > 0) {
-      for (let i = MAX_DAYS; i > endDate; i--) {
+      for (let i = DateProperties.MAX_DAYS; i > endDate; i--) {
         this.dateCollection[i - 1].setVisible(false);
       }
     } else if (visibleDifference < 0) {
-      for (let i = this.cachedEndDate; i < MAX_DAYS; i++) {
+      for (let i = this.cachedEndDate; i < DateProperties.MAX_DAYS; i++) {
         this.dateCollection[i].setVisible(true);
       }
     }
@@ -208,17 +197,15 @@ class DateDayComponent extends VisualDivElement {
     let lastProcessedIndex = 0;
     let i = 0;
     let dayStr = '';
-    let previousStartDayIndex = 0;
-    let totalRows = 0;
-    let endOfWeek = MAX_DAYS_IN_WEEK - 1;
+    let endOfWeek = DateProperties.MAX_DAYS_IN_WEEK - 1;
 
-    for (let i = this.startOfDay; i < DateDayComponent.DAY.length; i++) {
-      dayStr += `${DateDayComponent.DAY[i]} `;
+    for (let i = this.startOfDay; i < DateProperties.DAY.length; i++) {
+      dayStr += `${DateProperties.DAY[i]} `;
       this.dayOrderedCollection.push(this.dayCollection[i]);
     }
 
     for (let i = 0; i < this.startOfDay; i++) {
-      dayStr += `${DateDayComponent.DAY[i]} `;
+      dayStr += `${DateProperties.DAY[i]} `;
       this.dayOrderedCollection.push(this.dayCollection[i]);
     }
 
@@ -253,7 +240,7 @@ class DateDayComponent extends VisualDivElement {
       this.totalRows++;
     }
     if (startDayIndex !== 0) {
-      for (let i = startDayIndex; i < MAX_DAYS_IN_WEEK; i++) {
+      for (let i = startDayIndex; i < DateProperties.MAX_DAYS_IN_WEEK; i++) {
         this.populateCollection(startDayIndex);
         startDayIndex++;
       }
@@ -269,25 +256,25 @@ class DateDayComponent extends VisualDivElement {
       this.applyStyles(dateComponent, startDay, day);
     }
     switch (startDay) {
-      case FIRST_DAY:
+      case DateProperties.FIRST_DAY:
         this.firstDayCollection.push(dateComponent);
         break;
-      case SECOND_DAY:
+      case DateProperties.SECOND_DAY:
         this.secondDayCollection.push(dateComponent);
         break;
-      case THIRD_DAY:
+      case DateProperties.THIRD_DAY:
         this.thirdDayCollection.push(dateComponent);
         break;
-      case FOURTH_DAY:
+      case DateProperties.FOURTH_DAY:
         this.fourthDayCollection.push(dateComponent);
         break;
-      case FIFTH_DAY:
+      case DateProperties.FIFTH_DAY:
         this.fifthDayCollection.push(dateComponent);
         break;
-      case SIXTH_DAY:
+      case DateProperties.SIXTH_DAY:
         this.sixthDayCollection.push(dateComponent);
         break;
-      case SEVENTH_DAY:
+      case DateProperties.SEVENTH_DAY:
         this.seventhDayCollection.push(dateComponent);
         break;
     }
@@ -302,7 +289,7 @@ class DateDayComponent extends VisualDivElement {
     let customStyleApplied = false;
     let selectedStyleApplied = false;
 
-    this.manipulatedDate.setTime(this.firstDate.getTime() + (day * DateDayComponent.DAY_IN_MILLISECONDS));
+    this.manipulatedDate.setTime(this.firstDate.getTime() + (day * DateProperties.DAY_IN_MILLISECONDS));
 
     if (this.selectedDate && this.selectedDate.getDate() === this.manipulatedDate.getDate() &&
       this.selectedDate.getMonth() === this.manipulatedDate.getMonth() &&
@@ -368,19 +355,19 @@ class DateDayComponent extends VisualDivElement {
 
   getCollection(startDay) {
     switch (startDay) {
-      case FIRST_DAY:
+      case DateProperties.FIRST_DAY:
         return this.firstDayCollection;
-      case SECOND_DAY:
+      case DateProperties.SECOND_DAY:
         return this.secondDayCollection;
-      case THIRD_DAY:
+      case DateProperties.THIRD_DAY:
         return this.thirdDayCollection;
-      case FOURTH_DAY:
+      case DateProperties.FOURTH_DAY:
         return this.fourthDayCollection;
-      case FIFTH_DAY:
+      case DateProperties.FIFTH_DAY:
         return this.fifthDayCollection;
-      case SIXTH_DAY:
+      case DateProperties.SIXTH_DAY:
         return this.sixthDayCollection;
-      case SEVENTH_DAY:
+      case DateProperties.SEVENTH_DAY:
         return this.seventhDayCollection;
     }
     return null;
@@ -415,9 +402,9 @@ class DateDayComponent extends VisualDivElement {
     let dayCollection = null;
     let dayRenderer = null;
     let dateRenderer = null;
-    const cellWidth = parseInt(this.width / MAX_DAYS_IN_WEEK, 10);
+    const cellWidth = parseInt(this.width / DateProperties.MAX_DAYS_IN_WEEK, 10);
     const cellHeight = parseInt((this.height - this._headerGap - this._headerHeight) / (this.totalRows + 1), 10);
-    for (let dayIndex = 0; dayIndex < MAX_DAYS_IN_WEEK; dayIndex++) {
+    for (let dayIndex = 0; dayIndex < DateProperties.MAX_DAYS_IN_WEEK; dayIndex++) {
       renderY = this._headerGap;
       dayRenderer = this.dayOrderedCollection[dayIndex];
       dayRenderer.setPosition(renderX, renderY);
@@ -474,17 +461,6 @@ class DateDayComponent extends VisualDivElement {
 
 }
 
-DateDayComponent.SECOND_IN_MILLISECONDS = 1000;
-DateDayComponent.MINUTE_IN_MILLISECONDS = 1000 * 60;
-DateDayComponent.HOUR_IN_MILLISECONDS = DateDayComponent.MINUTE_IN_MILLISECONDS * 60;
-DateDayComponent.DAY_IN_MILLISECONDS = DateDayComponent.HOUR_IN_MILLISECONDS * 24;
-DateDayComponent.WEEK_IN_MILLISECONDS = DateDayComponent.DAY_IN_MILLISECONDS * 7;
-
 DateDayComponent.SELECTED_DATE = 'selectedDate';
-
-DateDayComponent.MONTH = ['January', 'February', 'March', 'April', 'May', 'June', '' +
-'July', 'August', 'September', 'October', 'November', 'December'];
-
-DateDayComponent.DAY = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
 
 export default DateDayComponent;
